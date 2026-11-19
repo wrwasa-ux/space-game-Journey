@@ -196,7 +196,9 @@ body.mob #hint{bottom:58px;font-size:10px}
  <button class="btn" onclick="nameSave()">ابدأ 🚀</button></div></div>
 <div id="mpo" class="ov spc"><div class="pnl" style="width:min(420px,94vw);padding:10px;max-height:92vh;overflow:auto">
  <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">🌐 أونلاين</h3><button class="lb" style="width:auto;padding:0 10px;font-size:13px" onclick="nameOpen()"><span id="mpn"></span> ✏️</button></div>
- <div class="row"><div class="seg"><button id="mpm0" class="on" onclick="mpMode('coop')">🤝 تعاوني</button><button id="mpm1" onclick="mpMode('vs')">⚔️ تنافسي 1v1</button></div></div>
+ <div class="row"><div class="seg"><button id="mm_coop" class="on" onclick="mpMode('coop')">🤝 تعاوني</button><button id="mm_coopE" onclick="mpMode('coopE')">♾️ Endless تعاوني</button></div></div>
+ <div class="row"><div class="seg"><button id="mm_vs1" onclick="mpMode('vs1')">⚔️ 1v1</button><button id="mm_vs2" onclick="mpMode('vs2')">2v2</button><button id="mm_vs3" onclick="mpMode('vs3')">3v3</button><button id="mm_vs4" onclick="mpMode('vs4')">4v4</button></div></div>
+ <div id="mmh" style="text-align:center;font-size:12px;min-height:18px;opacity:.85"></div>
  <div class="row" style="display:flex;gap:6px"><input id="mpf" maxlength="14" placeholder="🔎 اكتب اسم صاحبك" style="flex:1;font-size:16px;text-align:center;-webkit-user-select:text;user-select:text" onkeydown="event.stopPropagation();if(event.key=='Enter')mpGo('inv')"><button class="btn" onclick="mpGo('inv')">📨 ادعُه</button></div>
   <div id="mpfr" class="row" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center"></div>
  <div class="row" style="display:flex;gap:6px"><button class="btn" style="flex:1;font-size:13px" onclick="mpGo('pub')">🌍 لاعب عشوائي</button><button class="btn" style="flex:1;font-size:13px;background:#e7eaf0;border-color:#6c7588;color:#2b3345" onclick="mpGo('new')">🔒 غرفة خاصة</button></div>
@@ -204,15 +206,18 @@ body.mob #hint{bottom:58px;font-size:10px}
  <div id="mps" style="text-align:center;min-height:22px;font-size:14px"></div>
  <div style="display:flex;gap:8px"><button class="btn" style="flex:1;background:#e7eaf0;border-color:#6c7588;color:#2b3345" onclick="mpClose()">رجوع</button><button class="btn" style="background:#e7eaf0;border-color:#6c7588;color:#2b3345" onclick="mpUrl()">🔧</button></div>
 </div></div>
-<div id="mpl" class="ov spc"><div class="pnl" style="width:min(420px,94vw);padding:12px;text-align:center">
- <h3 style="margin:0 0 8px">🚀 غرفة الانتظار</h3>
- <div id="lbp" style="display:flex;gap:8px;margin-bottom:8px"></div>
+<div id="mpl" class="ov spc"><div class="pnl" style="width:min(440px,94vw);padding:12px;text-align:center;max-height:94vh;overflow:auto">
+ <h3 id="lbt" style="margin:0 0 2px"></h3>
+ <div id="lbc" style="font-size:14px;margin-bottom:8px"></div>
+ <div id="lbp"></div>
+ <button id="lbs" class="btn" style="display:none;width:100%;margin-bottom:8px;font-size:13px;background:#e7eaf0;border-color:#6c7588;color:#2b3345" onclick="mpTeam()">🔁 بدّل فريقي</button>
+ <div id="lbi" style="display:flex;gap:6px;margin-bottom:8px"><input id="lbf" maxlength="14" placeholder="📨 ادعُ صديق باسمه" style="flex:1;font-size:15px;text-align:center;-webkit-user-select:text;user-select:text" onkeydown="event.stopPropagation();if(event.key=='Enter')mpInv()"><button class="btn" style="font-size:13px" onclick="mpInv()">ادعُ</button></div>
  <div id="lbd"><div id="lbn" style="font-size:22px;font-weight:700"></div><div id="lbm" class="lvm"></div><div id="lbb" class="seg"></div></div>
  <div id="lbh" style="font-size:13px;min-height:20px;margin:8px 0"></div>
  <div style="display:flex;gap:8px"><button class="btn" style="flex:1;background:#e7eaf0;border-color:#6c7588;color:#2b3345" onclick="mpLobBack()">رجوع</button><button id="lbg" class="btn" style="flex:2" onclick="mpLobGo()"></button></div>
 </div></div>
 <div id="mpr" class="ov spc"><div id="mpt" style="font-size:28px"></div><div id="mpd" style="font-size:20px"></div><button class="btn" onclick="mpAgain()">🔁 العب مجدداً</button><button class="btn" onclick="mpClose()">القائمة</button></div>
-<div id="dmo" class="ov"><div style="font-size:30px">💥 لقد خسرت</div><button class="btn" onclick="mpClose()">🏠 القائمة</button><button class="btn" onclick="$('dmo').classList.remove('on')">👁️ مشاهدة صديقك</button></div>
+<div id="dmo" class="ov"><div style="font-size:30px">💥 تحطمت مركبتك</div><button class="btn" onclick="mpClose()">🏠 القائمة</button><button class="btn" onclick="$('dmo').classList.remove('on')">👁️ مشاهدة فريقك</button></div>
 <div id="inv2" class="ov"><div id="invt" style="font-size:24px;text-align:center;padding:0 12px"></div><button class="btn" onclick="mpAcc()">✅ قبول</button><button class="btn" style="background:#e7eaf0;border-color:#6c7588;color:#2b3345" onclick="mpDec()">❌ رفض</button></div>
 <div id="mpi" style="display:none;position:fixed;top:calc(env(safe-area-inset-top,0px) + 46px);left:8px;z-index:2;background:#000a;color:#fff;font-size:12px;padding:3px 9px;border-radius:10px;pointer-events:none"></div>
 <div id="wmap" class="ov"></div>
@@ -304,7 +309,7 @@ function edBuild(){const o=document.getElementById('edt');o.innerHTML='';
   d.innerHTML='<span class="el '+it.lp+'">'+it.n+'</span>'+(it.v?'<i class="ex" title="إخفاء / إظهار">👁</i>':'')+['tl','tr','bl','br'].map(c=>'<b class="h '+c+'" data-c="'+c+'"></b>').join('');
   d.addEventListener('pointerdown',e=>edDown(e,it,d));o.appendChild(d)}
  const bar=document.createElement('div');bar.id='edb';bar.className='pnl';
- bar.innerHTML='<div class="et">🎛️ تعديل الواجهة</div><div class="ei">اسحب أي عنصر لتحريكه • اسحب المربعات الخضراء بالزوايا للتكبير والتصغير • 👁 للإخفاء والإظهار</div><div class="er"><button class="btn" id="edr" style="background:#e7eaf0;border-color:#6c7588;color:#2b3345">↺ إعادة</button><button class="btn" id="edd">✓ تم</button></div>';
+ bar.innerHTML='<div class="et">تعديل الواجهة</div><div class="ei">اسحب أي عنصر لتحريكه • اسحب المربعات الخضراء بالزوايا للتكبير والتصغير • 👁 للإخفاء والإظهار</div><div class="er"><button class="btn" id="edr" style="background:#e7eaf0;border-color:#6c7588;color:#2b3345">↺ إعادة</button><button class="btn" id="edd">✓ تم</button></div>';
  bar.addEventListener('pointerdown',e=>e.stopPropagation());
  bar.querySelector('#edr').onclick=()=>{const v={showTop:CFG.showTop,showBar:CFG.showBar,showTxt:CFG.showTxt};Object.assign(CFG,UID,v);save();applyUI()};
  bar.querySelector('#edd').onclick=edEnd;o.appendChild(bar)}
@@ -332,7 +337,7 @@ function renderOpts(){const o=document.getElementById('opts');o.innerHTML='';
   for(const [v,n] of ch){const b=document.createElement('button');b.textContent=n;if(CFG[k]===v)b.className='on';b.onclick=()=>{CFG[k]=v;save();if(k=='diff'&&P)capGuns();if(k=='lang')applyLang();chkRot();renderOpts()};s.appendChild(b)}r.appendChild(s);o.appendChild(r)}
  for(const [t,k,mn,mx,st] of SL){const r=document.createElement('div');r.className='row';r.innerHTML='<label>'+t+': <span>'+CFG[k]+'</span></label><input type="range" min="'+mn+'" max="'+mx+'" step="'+st+'" value="'+CFG[k]+'">';
   r.querySelector('input').oninput=e=>{CFG[k]=+e.target.value;r.querySelector('span').textContent=CFG[k];save();if(k=='size')P.rad=5.2*CFG.size;applyUI()};o.appendChild(r)}
- {const eb=document.createElement('button');eb.className='btn';eb.style.cssText='width:100%;margin-top:8px';eb.textContent='🎛️ تعديل الواجهة (سحب وتكبير)';eb.onclick=edStart;o.appendChild(eb)}
+ {const eb=document.createElement('button');eb.className='btn';eb.style.cssText='width:100%;margin-top:8px';eb.textContent='تعديل الواجهة (سحب وتكبير)';eb.onclick=edStart;o.appendChild(eb)}
  {const rb=document.createElement('button');rb.className='kbr';rb.textContent='↩ إعادة ضبط أحجام وأماكن الواجهة';rb.onclick=()=>{Object.assign(CFG,UID);save();applyUI();renderOpts()};o.appendChild(rb)}
  kbUI(o)}
 let paused=false;
@@ -577,15 +582,15 @@ rs();chkRot();applyUI();start();hud();showMenu();applyLang();requestAnimationFra
 /* ---------- أونلاين ---------- */
 /* ---------- نظام الموجات (فردي + تعاوني، كل الصعوبات) ---------- */
 const WV={on:0,n:1,N:10,endless:0,cd:0,im:0,wd:0,pwd:0,KILLS:20};
-function wvBegin(n){if(WV.endless&&!MP.on){const b=crazy()?20:10;WV.KILLS=Math.min(30,b+(n-1)*(crazy()?1:2));pl=((n-1)/3|0)%PL.length;if(n>BESTW){BESTW=n;try{localStorage.setItem('best_wave',n)}catch(e){}}}
-  WV.n=n;WV.wd=0;WV.pwd=0;WV.im=0;kills=0;MP.lk=0;bph=0;bsn=0;bsd=0;nbT=0;bk=0;bossT=1e9;done=false;E=[];spawnT=1.2;goal=WV.KILLS;if(MP.on)cur.l=n;flag=null;
-  ban('🌊 الموجة '+ar(n)+(WV.endless&&!MP.on?'':' من '+ar(WV.N))+' — اقتل '+ar(WV.KILLS)+' وحش ثم '+(NB()>1?ar(NB())+' زعماء':'زعيم'));sfx(520,.3,'triangle',.8);mpSend({t:'wn',n})}
-function wvDone(){if(WV.endless&&!MP.on&&!WV.wd){meta.coins+=10+WV.n*2;saveGame()}WV.wd=1;mpSend({t:'wd',n:WV.n});sfx(900,.3,'triangle',.7);ban('✅ أنهيت الموجة '+ar(WV.n)+(!MP.on||WV.pwd>=WV.n||MP.pd?'':' — بانتظار صاحبك'))}
+function wvBegin(n){if(WV.endless){const b=crazy()?20:10;WV.KILLS=Math.min(40,Math.round((b+(n-1)*(crazy()?1:2))*wvScale()));pl=((n-1)/3|0)%PL.length;if(n>BESTW){BESTW=n;try{localStorage.setItem('best_wave',n)}catch(e){}}}
+  WV.n=n;WV.wd=0;WV.pwd=0;WV.im=0;kills=0;MP.lk=0;bph=0;bsn=0;bsd=0;nbT=0;bk=0;bossT=1e9;done=false;E=[];spawnT=1.2;goal=WV.KILLS;if(MP.on&&!WV.endless)cur.l=n;flag=null;
+  ban('🌊 الموجة '+ar(n)+(WV.endless?'':' من '+ar(WV.N))+' — اقتل '+ar(WV.KILLS)+' وحش ثم '+(NB()>1?ar(NB())+' زعماء':'زعيم'));sfx(520,.3,'triangle',.8);mpSend({t:'wn',n})}
+function wvDone(){if(WV.endless&&!WV.wd){meta.coins+=MP.on?0:10+WV.n*2;saveGame()}WV.wd=1;mpSend({t:'wd',n:WV.n});sfx(900,.3,'triangle',.7);ban('✅ أنهيت الموجة '+ar(WV.n)+(mpAllDone()?'':' — بانتظار الفريق'))}
 function wvCheck(){
   if(!WV.on||!WV.wd||WV.im>0)return;
   if(MP.on&&(MP.end||MP.dead))return;
-  if(!MP.on||WV.pwd>=WV.n||MP.pd){
-    if(WV.n>=WV.N&&!(WV.endless&&!MP.on)){WV.on=0;done=true;if(MP.on)mpEnd('win');else winLevel()}
+  if(mpAllDone()){
+    if(WV.n>=WV.N&&!WV.endless){WV.on=0;done=true;if(MP.on)mpEnd('win');else winLevel()}
     else{WV.im=4;ban('⏭️ الموجة '+ar(WV.n+1)+' بعد لحظات...');sfx(600,.2,'triangle',.6)}}}
 function wvTick(dt){
   if(!WV.on||(MP.on&&MP.dead))return;
@@ -607,26 +612,26 @@ const ALN=['..#...#..','...#.#...','..#####..','.##o#o##.','#########','#.#####.
 function wvAl(cx,cy,sz,col,eye,a){const c=sz/9,x0=cx-sz/2,y0=cy-c*3.5;ctx.globalAlpha=a;
   ALN.forEach((r,j)=>{for(let i=0;i<9;i++){const ch=r[i];if(ch=='.')continue;ctx.fillStyle=ch=='o'?eye:col;ctx.fillRect(x0+i*c,y0+j*c,c+.5,c+.5)}});ctx.globalAlpha=1}
 function wvDraw(u,tp){
-  const pw=Math.min(W-16,400*u),x0=W/2-pw/2,y0=158*u+tp,h1=28*u,g=MP.g,dead=MP.on&&!!MP.dead;
+  const pw=Math.min(W-16,400*u),x0=W/2-pw/2,y0=158*u+tp,h1=28*u,g=MP.on&&MP.dead?(mpSpec()||{}).g:null,dead=MP.on&&!!MP.dead;
   const hp=dead?(g?Math.max(0,Math.min(1,g.h/(g.M||1))):0):Math.max(0,Math.min(1,P.hp/(P.max||1)));
   ctx.save();
   /* شريط الصحة */
   wvRR(x0-3*u,y0-3*u,pw+6*u,h1+6*u,10*u);ctx.fillStyle='#0b0f2e';ctx.fill();ctx.lineWidth=2*u;ctx.strokeStyle='#5cf0ff';ctx.stroke();
   wvRR(x0,y0,pw,h1,7*u);ctx.fillStyle='#07140f';ctx.fill();
   if(hp>0){const gr=ctx.createLinearGradient(0,y0,0,y0+h1),c=hp>.5?['#9dffb4','#1fb34a']:hp>.25?['#ffe08a','#d99a1c']:['#ff9a9a','#c21f2f'];gr.addColorStop(0,c[0]);gr.addColorStop(1,c[1]);ctx.fillStyle=gr;const bw=Math.max(8*u,pw*hp);wvRR(x0,y0,bw,h1,7*u);ctx.fill();ctx.fillStyle='#ffffff40';wvRR(x0+3*u,y0+3*u,Math.max(2,bw-6*u),h1*.28,3*u);ctx.fill()}
-  if(dead)wvTx('👁️ '+(MP.op||'صاحبك'),15*u,'#fff','#04140a',W/2,y0+h1/2+1);else wvPx('SHIP HEALTH',12*u,'#fff','#04301a',W/2,y0+h1/2+1);
+  if(dead)wvTx('👁️ '+mpOpN(),15*u,'#fff','#04140a',W/2,y0+h1/2+1);else wvPx('SHIP HEALTH',12*u,'#fff','#04301a',W/2,y0+h1/2+1);
   /* شارة الموجة + مسار الوحوش */
   const y1=y0+h1+9*u,h2=28*u,bw=124*u,tx=x0+bw+6*u,tw=pw-bw-6*u,bossP=bph&&!dead;
   wvRR(x0,y1,bw,h2,7*u);{const gr=ctx.createLinearGradient(0,y1,0,y1+h2);gr.addColorStop(0,'#eef2f8');gr.addColorStop(1,'#98a4bb');ctx.fillStyle=gr;ctx.fill();ctx.lineWidth=2*u;ctx.strokeStyle='#3b4560';ctx.stroke()}
-  wvPx('WAVE '+WV.n+(WV.endless&&!MP.on?'':'/'+WV.N),10*u,'#1c2640',null,x0+bw/2,y1+h2/2+1);
+  wvPx('WAVE '+WV.n+(WV.endless?'':'/'+WV.N),10*u,'#1c2640',null,x0+bw/2,y1+h2/2+1);
   wvRR(tx,y1,tw,h2,13*u);{const gr=ctx.createLinearGradient(0,y1,0,y1+h2);gr.addColorStop(0,bossP?'#6b1a2a':'#3d1c70');gr.addColorStop(1,bossP?'#34101a':'#1f0f45');ctx.fillStyle=gr;ctx.fill();ctx.lineWidth=2*u;ctx.strokeStyle=bossP?'#ff8a9a':'#b48cff';ctx.stroke()}
   if(bossP){const nb=NB(),st=(tw-24*u)/nb;for(let i=0;i<nb;i++)wvAl(tx+12*u+st*(i+.5),y1+h2/2,22*u,'#ff5a6a','#2a0a12',(WV.wd||i<bsd)?.22:1)}
   else{const N=WV.KILLS,st=(tw-20*u)/N,sz=Math.min(15*u,st*.95),ok=WV.wd?N:Math.min(N,Math.floor(kills));for(let i=0;i<N;i++)wvAl(tx+10*u+st*(i+.5),y1+h2/2,sz,'#b86bff','#1a0a3a',i<ok?.2:1)}
   /* سطر الحالة */
   const y2=y1+h2+14*u;let st2;
   if(WV.im>0)st2='⏭️ الموجة '+ar(WV.n+1)+' تبدأ بعد '+ar(Math.ceil(WV.im));
-  else if(WV.wd)st2=MP.on?'⏳ بانتظار '+(MP.op||'صاحبك')+' يخلص موجته':'✅ أنهيت الموجة '+ar(WV.n);
-  else if(dead)st2='👁️ تشاهد '+(MP.op||'صاحبك');
+  else if(WV.wd)st2=MP.on?'⏳ بانتظار باقي الفريق يخلصون موجتهم':'✅ أنهيت الموجة '+ar(WV.n);
+  else if(dead)st2='👁️ تشاهد '+mpOpN();
   else if(bph)st2=NB()>1?'👑 الزعماء '+ar(Math.min(NB(),bsd))+' / '+ar(NB()):'👑 اهزم الزعيم!';
   else st2='👾 '+ar(Math.min(WV.KILLS,kills|0))+' / '+ar(WV.KILLS);
   wvTx(st2,14*u,'#cfe8ff','#04101a',W/2,y2);
@@ -637,7 +642,8 @@ function wvDraw(u,tp){
     wvTx('🎁 +٥٠ 🚀   +٥٠ 🔫   +٥٠ 🔩',22*u,'#7dff9a','#04140a',W/2,cy+104*u)}
   ctx.restore()}
 let _nm='';try{_nm=localStorage.getItem('mp_name')||''}catch(e){}
-const MP={name:_nm,op:'',rt:0,cbs:[],inv:null,ws:null,on:0,lock:0,m:'coop',side:0,g:null,st:0,lk:0,end:0,dead:0,pd:0,sel:'coop',gs:{},ht:0,gd:{},et:0,el:0,lob:0,ldf:1,lrd:0,grd:0};
+const MPM={coop:{m:'coop',en:0,ts:0},coopE:{m:'coop',en:1,ts:0},vs1:{m:'vs',en:0,ts:1},vs2:{m:'vs',en:0,ts:2},vs3:{m:'vs',en:0,ts:3},vs4:{m:'vs',en:0,ts:4}};
+const MP={name:_nm,op:'',rt:0,cbs:[],inv:null,ws:null,on:0,lock:0,m:'coop',en:0,ts:0,me:0,tm:0,n0:1,ps:[],pm:{},ld:null,note:'',end:0,dead:0,sel:'coop',ht:0,et:0,el:0,lob:0,ldf:1,st:0,uk:'',how:''};
 function MPU(){try{const u=localStorage.getItem('mp_url');if(u)return u}catch(e){}return location.host?(location.protocol=='https:'?'wss://':'ws://')+location.host:''}
 function mpUrl(){const u=prompt('عنوان السيرفر (مثال: wss://my-game.onrender.com)',MPU());if(u!=null){try{localStorage.setItem('mp_url',u.trim())}catch(e){}mpSt('تم حفظ العنوان')}}
 const mpSt=t=>{$('mps').textContent=t};
@@ -659,28 +665,46 @@ function mpFrRender(){const b=$('mpfr');if(!b)return;b.innerHTML='';
     const x=document.createElement('button');x.textContent='✕';x.style.cssText='border:0;border-right:1px solid #6c7588;background:transparent;padding:6px 8px;font-size:13px;color:#8a3a3a;cursor:pointer';x.onclick=()=>mpFrDel(n);
     w.appendChild(a);w.appendChild(x);b.appendChild(w)}}
 const DFV=[.7,1,1.4,2],DFC=['#3ecf7a','#e6c92a','#ff9a3a','#ff4a5e'];
-function mpLobby(d){MP.lob=1;MP.side=d.side;MP.op=d.op||'';MP.m=d.m;MP.ldf=DFV.includes(+d.df)?+d.df:1;MP.grd=0;MP.lrd=0;
-  if(MP.how&&MP.how!='pub'&&d.op)mpFrAdd(d.op);
+function mpLobby(d){if(MP.ld&&MP.ld.p.length!=d.p.length)MP.note='';MP.lob=1;MP.ld=d;MP.m=d.m;MP.en=d.en|0;MP.ts=d.ts|0;MP.me=d.me;MP.ldf=DFV.includes(+d.df)?+d.df:1;
   hideAll();$('mpl').classList.add('on');mode='menu';mpLobR()}
+const mpMN=d=>d.m=='vs'?'⚔️ '+d.ts+' ضد '+d.ts:(d.en?'♾️ تعاوني Endless':'🤝 تعاوني');
 function mpLobR(){
-  const host=!MP.side,vs=MP.m=='vs',li=Math.max(0,DFV.indexOf(MP.ldf));
-  const p=$('lbp');p.innerHTML='';
-  const card=(n,tag)=>{const d=document.createElement('div');d.style.cssText='flex:1;border:2px solid #6c7588;border-radius:6px;padding:6px 4px;background:#e7eaf0;font-size:14px;overflow:hidden';const a=document.createElement('div');a.textContent=n;a.style.fontWeight='700';const b=document.createElement('div');b.textContent=tag;b.style.fontSize='12px';d.appendChild(a);d.appendChild(b);return d};
-  p.appendChild(card(MP.name,host?'👑 المضيف (أنت)':(MP.lrd?'✅ جاهز':'⏳ غير جاهز')));
-  p.appendChild(card(MP.op||'لاعب',host?(MP.grd?'✅ جاهز':'⏳ غير جاهز'):'👑 المضيف'));
+  const d=MP.ld;if(!d)return;
+  const host=!!d.host,vs=d.m=='vs',li=Math.max(0,DFV.indexOf(MP.ldf)),hs=d.p[0]&&d.p[0].s,me=d.p.find(p=>p.s==d.me)||{};
+  $('lbt').textContent=mpMN(d);
+  $('lbc').textContent=d.pub?'🌍 غرفة عامة · '+d.p.length+'/'+d.max:'🔒 رمز الغرفة: '+d.code+' · '+d.p.length+'/'+d.max;
+  const card=(p)=>{const c=document.createElement('div');c.style.cssText='border:2px solid '+(p?'#6c7588':'#b9c0cf')+';border-radius:6px;padding:6px 4px;background:'+(p?'#e7eaf0':'#f3f5f9')+';font-size:14px;overflow:hidden;min-height:44px;'+(p?'':'opacity:.55');
+    const a=document.createElement('div'),b=document.createElement('div');a.style.fontWeight='700';b.style.fontSize='12px';
+    if(p){a.textContent=p.n+(p.s==d.me?' (أنت)':'');b.textContent=p.s==hs?'👑 المضيف':(p.r?'✅ جاهز':'⏳ غير جاهز')}else{a.textContent='—';b.textContent='مكان فاضي'}
+    c.appendChild(a);c.appendChild(b);return c};
+  const box=$('lbp');box.innerHTML='';
+  if(vs){box.style.cssText='display:flex;gap:8px;margin-bottom:8px';
+    [0,1].forEach(t=>{const col=document.createElement('div');col.style.cssText='flex:1;display:flex;flex-direction:column;gap:6px';
+      const h=document.createElement('div');h.textContent=(t?'🔴 الفريق الثاني':'🔵 الفريق الأول');h.style.cssText='font-weight:700;font-size:13px';col.appendChild(h);
+      const l=d.p.filter(p=>p.t==t);for(let i=0;i<d.ts;i++)col.appendChild(card(l[i]));box.appendChild(col)})}
+  else{box.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px';for(let i=0;i<d.max;i++)box.appendChild(card(d.p[i]))}
+  $('lbs').style.display=vs?'block':'none';
+  $('lbi').style.display=d.p.length<d.max?'flex':'none';
   $('lbd').style.display=vs?'none':'block';
   $('lbn').textContent='الصعوبة: '+DFN[MP.ldf]+' '+(li+1)+'/4';
   const m=$('lbm');m.innerHTML='';DFV.forEach((v,i)=>{const e=document.createElement('i');if(i<=li)e.style.background=DFC[li];m.appendChild(e)});
   const bs=$('lbb');bs.innerHTML='';
-  DFV.forEach((v,i)=>{const b=document.createElement('button');b.textContent=DFN[v].replace(' 🔥','');if(i==li)b.className='on';b.disabled=!host;b.onclick=()=>{MP.ldf=v;MP.grd=0;mpSend({t:'df',v});mpLobR()};bs.appendChild(b)});
-  $('lbh').textContent=host?(MP.grd?'صاحبك جاهز ✅ — اضغط ابدأ':'بانتظار أن يضغط صاحبك "جاهز"'+(vs?'':' (أي تغيير بالصعوبة يلغي جاهزيته)')):(vs?'اضغط جاهز عشان يبدأ المضيف':'المضيف هو اللي يختار الصعوبة — اضغط جاهز إذا موافق');
-  const g=$('lbg');g.disabled=host&&!MP.grd;g.textContent=host?'▶ ابدأ':(MP.lrd?'↩ إلغاء الجاهزية':'✅ جاهز')}
-function mpLobGo(){if(!MP.lob)return;if(!MP.side){if(MP.grd)mpSend({t:'go'})}else{MP.lrd=MP.lrd?0:1;mpSend({t:'rdy',v:MP.lrd});mpLobR()}}
-function mpLobBack(){mpSend({t:'leave'});MP.lob=0;mpOpen()}
-function mpLobX(m){MP.lob=0;mpOpen();mpSt(m)}
+  DFV.forEach((v,i)=>{const b=document.createElement('button');b.textContent=DFN[v].replace(' 🔥','');if(i==li)b.className='on';b.disabled=!host;b.onclick=()=>{mpSend({t:'df',v})};bs.appendChild(b)});
+  const others=d.p.filter(p=>p.s!=hs),allR=others.every(p=>p.r),ok=allR&&(!vs||(d.p.some(p=>p.t==0)&&d.p.some(p=>p.t==1)));
+  let h;
+  if(host)h=ok?(d.p.length<2&&!vs?'تقدر تبدأ لحالك أو تنتظر أصدقاءك (لين '+d.max+')':'كل شي جاهز — اضغط ابدأ'):(vs&&!(d.p.some(p=>p.t==0)&&d.p.some(p=>p.t==1))?'لازم لاعب واحد على الأقل بكل فريق':'بانتظار ضغط الباقي على \"جاهز\"'+(vs?'':' (أي تغيير بالصعوبة يلغي جاهزيتهم)'));
+  else h=vs?'اضغط جاهز عشان يبدأ المضيف':'المضيف يختار الصعوبة — اضغط جاهز إذا موافق';
+  if(d.pub&&d.p.length>=d.max)h='🚀 الغرفة اكتملت — تبدأ تلقائياً بعد لحظات';
+  $('lbh').textContent=(MP.note?MP.note+' · ':'')+h;
+  const g=$('lbg');g.disabled=host&&!ok;g.textContent=host?'▶ ابدأ ('+d.p.length+')':(me.r?'↩ إلغاء الجاهزية':'✅ جاهز')}
+function mpLobGo(){if(!MP.lob||!MP.ld)return;if(MP.ld.host)mpSend({t:'go'});else{const me=MP.ld.p.find(p=>p.s==MP.ld.me)||{};mpSend({t:'rdy',v:me.r?0:1})}}
+function mpTeam(){mpSend({t:'tm'})}
+function mpInv(){const f=$('lbf').value.trim();if(f.length<2)return;mpSend({t:'inv',to:f});$('lbf').value=''}
+function mpLobBack(){mpSend({t:'leave'});MP.lob=0;MP.ld=null;MP.note='';mpOpen()}
 function mpRd(){if(MPD!=null){CFG.diff=MPD;MPD=null}}
-function mpOpen(){show('mpo');mpSt('');mpHdr();mpFrRender();mpBoot()}
-function mpMode(m){MP.sel=m;$('mpm0').classList.toggle('on',m=='coop');$('mpm1').classList.toggle('on',m=='vs')}
+function mpOpen(){show('mpo');mpSt('');mpHdr();mpFrRender();mpMode(MP.sel);mpBoot()}
+const MPH={coop:'🤝 تعاوني: من ١ لين ٤ لاعبين ضد الوحوش — ١٠ موجات',coopE:'♾️ Endless: موجات بلا نهاية مع أصدقائك (١–٤) — لين ما تتحطمون كلكم',vs1:'⚔️ ١ ضد ١: أول من يوصل العلم 🚩 أو يدمّر خصمه',vs2:'⚔️ ٢ ضد ٢: أول فريق يوصل العلم 🚩 أو يدمّر الخصوم',vs3:'⚔️ ٣ ضد ٣: أول فريق يوصل العلم 🚩 أو يدمّر الخصوم',vs4:'⚔️ ٤ ضد ٤: أول فريق يوصل العلم 🚩 أو يدمّر الخصوم'};
+function mpMode(m){if(!MPM[m])m='coop';MP.sel=m;for(const k in MPM){const b=$('mm_'+k);if(b)b.classList.toggle('on',k==m)}$('mmh').textContent=MPH[m]}
 function mpSend(o){if(MP.ws&&MP.ws.readyState==1)MP.ws.send(JSON.stringify(o))}
 function mpDrop(){const w=MP.ws;MP.ws=null;if(w){try{w.send('{"t":"leave"}')}catch(e){}try{w.close()}catch(e){}}}
 function mpClose(){MP.lob=0;WV.on=0;WV.cd=0;WV.im=0;mpRd();NOE=0;$('dmo').classList.remove('on');const l=MP.lock;mpSend({t:'leave'});if(MP.on||l){mpDrop();MP.on=0;MP.lock=0;$('mpi').style.display='none';start()}showMenu();mpBoot()}
@@ -701,66 +725,92 @@ function mpGo(k){
   const c=$('mpc').value.trim().toUpperCase(),f=$('mpf').value.trim();
   if(k=='join'&&c.length<4)return mpSt('اكتب رمز الغرفة (٤ خانات)');
   if(k=='inv'&&f.length<2)return mpSt('اكتب اسم صاحبك');
-  MP.how=k;mpConn(()=>{mpSend({t:k,m:MP.sel,lv:[mw,ml],c,to:f,df:CFG.diff});mpSt(k=='inv'?'🔎 جاري البحث عن '+f+'...':k=='pub'?'🔎 جاري البحث عن لاعب...':'⏳ ...')})}
+  MP.how=k;MP.note='';mpConn(()=>{mpSend(Object.assign({t:k,lv:[mw,ml],c,to:f,df:CFG.diff},MPM[MP.sel]));mpSt(k=='inv'?'🔎 جاري البحث عن '+f+'...':k=='pub'?'🔎 جاري البحث عن غرفة...':'⏳ ...')})}
 function mpAcc(){const f=MP.inv;MP.inv=null;$('inv2').classList.remove('on');if(f){MP.how='acc';mpSend({t:'acc',from:f.from})}}
 function mpDec(){const f=MP.inv;MP.inv=null;$('inv2').classList.remove('on');if(f)mpSend({t:'dec',from:f.from})}
 function mpMsg(d){
-  if(d.t=='wait')mpSt(d.w?'📨 أرسلت الدعوة لـ '+d.w+' — بانتظار الرد...':d.c?'🔒 رمز غرفتك: '+d.c+' — أعطه لصديقك وانتظر':'🔎 جاري البحث عن لاعب...');
-  else if(d.t=='err'){if(d.c=='name')nameOpen(d.e);else mpSt('❌ '+d.e)}
-  else if(d.t=='lobby')mpLobby(d);
-  else if(d.t=='df'&&MP.lob){MP.ldf=DFV.includes(+d.v)?+d.v:1;MP.lrd=0;mpLobR()}
-  else if(d.t=='rdy'&&MP.lob){MP.grd=d.v?1:0;mpLobR()}
-  else if(d.t=='left'&&MP.lob)mpLobX('🚪 '+(MP.op||'صاحبك')+' غادر الغرفة');
-  else if(d.t=='start')mpStart(d);
-  else if(d.t=='inv'){if(mode!='menu'||MP.on||MP.lob){mpSend({t:'dec',from:d.from});return}MP.inv=d;$('invt').textContent='📨 '+d.from+' يدعوك للعب '+(d.m=='vs'?'⚔️ تنافسي 1 ضد 1':'🤝 تعاوني');$('inv2').classList.add('on')}
-  else if(d.t=='invx'){if(MP.inv&&MP.inv.from==d.from){MP.inv=null;$('inv2').classList.remove('on')}}
+  const t=d.t;
+  if(t=='err'){if(d.c=='name')nameOpen(d.e);else if(MP.lob){MP.note='❌ '+d.e;mpLobR()}else mpSt('❌ '+d.e)}
+  else if(t=='lobby')mpLobby(d);
+  else if(t=='invok'){MP.note='📨 أرسلت الدعوة لـ '+d.w;if(MP.lob)mpLobR();else mpSt(MP.note)}
+  else if(t=='start')mpStart(d);
+  else if(t=='inv'){if(mode!='menu'||MP.on||MP.lob){mpSend({t:'dec',from:d.from});return}MP.inv=d;$('invt').textContent='📨 '+d.from+' يدعوك للعب '+mpMN(d);$('inv2').classList.add('on')}
+  else if(t=='invx'){if(MP.inv&&MP.inv.from==d.from){MP.inv=null;$('inv2').classList.remove('on')}}
   else if(!MP.on)return;
-  else if(d.t=='wd'){WV.pwd=Math.max(WV.pwd,d.n|0);wvCheck()}
-  else if(d.t=='wn'&&MP.dead){WV.n=Math.max(1,Math.min(WV.N,d.n|0));kills=0;MP.lk=0}
-  else if(d.t=='u'){MP.uc=(d.c||[]).slice(0,200).map(q=>({x:q[0]|0,y:q[1]|0,t:q[2],c:0,sg:q[3]?1:0}))}
-  else if(d.t=='s'){const g=MP.g;if(!g)MP.g={x:d.x,y:d.y,r:d.r||0,tx:d.x,ty:d.y,tr:d.r||0,h:d.h,M:d.M,mv:d.mv,sh:d.sh|0,sg:d.sg};else Object.assign(g,{tx:d.x,ty:d.y,tr:d.r||0,h:d.h,M:d.M,mv:d.mv,sh:d.sh|0,sg:d.sg})}
-  else if(d.t=='b'&&!(MP.m=='vs'&&MP.dead)){const co=MP.m=='coop';for(const q of d.b)B.push({x:q[0],y:q[1],vx:q[2],vy:q[3],own:0,dmg:q[4],life:q[5],bc:co?'#5cf0ff':'#ffa646',r:1,vis:co?1:0})}
-  else if(d.t=='en'&&MP.m=='coop'){const i=d.i|0,nn=Math.max(1,Math.min(14,d.n|0||1));MP.gd[i]={id:i,n:nn,cells:(d.c||[]).slice(0,260).map(q=>[q[0]|0,q[1]|0]),sc:Math.max(.5,Math.min(4,+d.s||1)),t:String(d.k||'n').slice(0,8),pl:Math.max(0,Math.min(PL.length-1,d.p|0)),boss:d.b?1:0,col:(typeof d.o=='string'&&/^#[0-9a-f]{3,8}$/i.test(d.o))?d.o:undefined,ic:String(d.ic||'').slice(0,4),x:0,y:0,tx:0,ty:0,hp:1,mx:1,fl:0,live:0}}
-  else if(d.t=='e'&&MP.m=='coop'){const seen={};for(const q of (d.l||[]).slice(0,60)){const i=q[0]|0,e=MP.gd[i];if(!e)continue;seen[i]=1;e.tx=q[1];e.ty=q[2];e.hp=q[3];e.mx=q[4]||1;if(!e.live){e.x=e.tx;e.y=e.ty;e.live=1}}for(const i in MP.gd)if(!seen[i])delete MP.gd[i]}
-  else if(d.t=='eb'&&MP.m=='coop'){for(const q of (d.b||[]).slice(0,60))B.push({x:q[0],y:q[1],vx:q[2],vy:q[3],own:0,dmg:0,life:q[4],bc:'#ff5a5a',r:1,vis:1,en:1})}
-  else if(d.t=='k'&&MP.m=='coop'){if(!bph)kills+=d.n|0;MP.lk=kills}
-  else if(d.t=='fin')mpEnd(MP.m=='vs'?'lose':'win');
-  else if(d.t=='dead'){if(MP.m=='vs')mpEnd('win');else{MP.pd=1;MP.gd={};if(MP.g)MP.g.dead=1;if(MP.dead)mpEnd('lose');else ban('💥 '+(MP.op||'شريكك')+' تحطم!')}}
-  else if(d.t=='left')mpEnd('left')}
+  else{
+    const p=MP.pm[d.f];if(!p)return;
+    if(t=='wd'){p.pwd=Math.max(p.pwd,d.n|0);wvCheck()}
+    else if(t=='wn'){if(MP.dead){WV.n=Math.max(1,WV.endless?d.n|0:Math.min(WV.N,d.n|0));kills=0;MP.lk=0}}
+    else if(t=='u'){p.uc=(d.c||[]).slice(0,200).map(q=>({x:q[0]|0,y:q[1]|0,t:q[2],c:0,sg:q[3]?1:0}))}
+    else if(t=='s'){const g=p.g;if(!g)p.g={x:d.x,y:d.y,r:d.r||0,tx:d.x,ty:d.y,tr:d.r||0,h:d.h,M:d.M,mv:d.mv,sh:d.sh|0,sg:d.sg};else Object.assign(g,{tx:d.x,ty:d.y,tr:d.r||0,h:d.h,M:d.M,mv:d.mv,sh:d.sh|0,sg:d.sg})}
+    else if(t=='b'&&!(MP.m=='vs'&&MP.dead)){const fr=MP.m=='coop'||p.tm==MP.tm;for(const q of (d.b||[]).slice(0,30))B.push({x:q[0],y:q[1],vx:q[2],vy:q[3],own:0,dmg:q[4],life:q[5],bc:fr?p.col:'#ffa646',r:1,vis:fr?1:0})}
+    else if(t=='en'&&MP.m=='coop'){const i=d.i|0,nn=Math.max(1,Math.min(14,d.n|0||1));p.gd[i]={id:i,n:nn,cells:(d.c||[]).slice(0,260).map(q=>[q[0]|0,q[1]|0]),sc:Math.max(.5,Math.min(4,+d.s||1)),t:String(d.k||'n').slice(0,8),pl:Math.max(0,Math.min(PL.length-1,d.p|0)),boss:d.b?1:0,col:(typeof d.o=='string'&&/^#[0-9a-f]{3,8}$/i.test(d.o))?d.o:undefined,ic:String(d.ic||'').slice(0,4),x:0,y:0,tx:0,ty:0,hp:1,mx:1,fl:0,live:0}}
+    else if(t=='e'&&MP.m=='coop'){const seen={};for(const q of (d.l||[]).slice(0,60)){const i=q[0]|0,e=p.gd[i];if(!e)continue;seen[i]=1;e.tx=q[1];e.ty=q[2];e.hp=q[3];e.mx=q[4]||1;if(!e.live){e.x=e.tx;e.y=e.ty;e.live=1}}for(const i in p.gd)if(!seen[i])delete p.gd[i]}
+    else if(t=='eb'&&MP.m=='coop'){for(const q of (d.b||[]).slice(0,60))B.push({x:q[0],y:q[1],vx:q[2],vy:q[3],own:0,dmg:0,life:q[4],bc:'#ff5a5a',r:1,vis:1,en:1})}
+    else if(t=='k'&&MP.m=='coop'){if(!bph)kills+=d.n|0;MP.lk=kills}
+    else if(t=='fin')mpEnd(MP.m=='vs'?(p.tm==MP.tm?'win':'lose'):'win');
+    else if(t=='dead'){p.dead=1;p.gd={};if(p.g)p.g.dead=1;
+      if(MP.m=='vs')mpVsCheck();
+      else if(MP.dead&&MP.ps.every(x=>x.dead||x.gone))mpEnd('lose');
+      else{if(!MP.dead)ban('💥 '+p.n+' تحطم!');wvCheck()}}
+    else if(t=='pl'){p.gone=1;p.gd={};if(p.g)p.g.dead=1;
+      if(MP.m=='vs')mpVsCheck();
+      else if(MP.ps.length&&MP.ps.every(x=>x.gone))mpEnd('left');
+      else if(MP.dead&&MP.ps.every(x=>x.dead||x.gone))mpEnd('lose');
+      else wvCheck()}}}
+function mpVsCheck(){if(MP.end)return;let my=!MP.dead,op=0;
+  for(const p of MP.ps){if(p.dead||p.gone)continue;if(p.tm==MP.tm)my=1;else op=1}
+  if(!op)mpEnd('win');else if(!my)mpEnd('lose')}
+const MPC=['#5cf0ff','#7dff9a','#ffd166','#ff9aff'];
 function mpStart(d){
-  MP.lob=0;MP.on=1;MP.lock=1;MP.end=0;MP.dead=0;MP.pd=0;MP.g=null;MP.m=d.m;MP.side=d.side;MP.op=d.op||'';MP.st=0;MP.ht=0;MP.uk='';MP.uc=null;MP.gd={};MP.et=0;MP.el=0;
+  MP.lob=0;MP.on=1;MP.lock=1;MP.end=0;MP.dead=0;MP.note='';MP.m=d.m;MP.en=d.en|0;MP.ts=d.ts|0;MP.me=d.me;MP.st=0;MP.ht=0;MP.uk='';MP.et=0;MP.el=0;
+  const all=(d.p||[]).slice().sort((a,b)=>a.s-b.s),mine=all.find(p=>p.s==d.me)||{t:0,s:d.me};MP.tm=mine.t|0;MP.n0=all.length;
+  MP.ps=all.filter(p=>p.s!=d.me).map((p,i)=>({s:p.s,n:p.n,tm:p.t|0,g:null,gd:{},dead:0,gone:0,pwd:0,uc:null,h:null,col:d.m=='vs'?(p.t==MP.tm?'#5cf0ff':'#ff5a6e'):MPC[(i+1)%4]}));
+  MP.pm={};MP.ps.forEach(p=>MP.pm[p.s]=p);
   try{saveGame()}catch(e){}
   if(MPD==null)MPD=CFG.diff;{const v=+d.df;CFG.diff=[.7,1,1.4,2].includes(v)?v:1}
-  if(MP.how&&MP.how!='pub'&&d.op)mpFrAdd(d.op);MP.how='';
-  const r0=CFG.reset;CFG.reset=1;startLevel(Math.min(d.lv[0],PL.length-1),d.lv[1]);CFG.reset=r0;
-  NOE=d.m=='vs'?1:0;if(NOE){E=[];flag={x:0,y:-1600}}P.x=(d.m=='vs'?220:60)*(d.side?1:-1);P.y=0;MP.lk=kills;$('mpi').style.display='block';
-  WV.endless=0;WV.on=d.m=='coop'?1:0;WV.KILLS=crazy()?20:10;WV.n=1;WV.cd=0;WV.im=0;WV.wd=0;WV.pwd=0;
+  if(MP.how&&MP.how!='pub')MP.ps.forEach(p=>mpFrAdd(p.n));MP.how='';
+  const r0=CFG.reset;CFG.reset=1;const lv=d.en?[0,1]:d.lv;startLevel(Math.min(lv[0],PL.length-1),lv[1]);CFG.reset=r0;
+  const vs=d.m=='vs';NOE=vs?1:0;if(NOE){E=[];flag={x:0,y:-1600}}
+  if(vs){const tm=all.filter(p=>p.t==MP.tm),i=Math.max(0,tm.findIndex(p=>p.s==d.me));P.x=MP.tm?220:-220;P.y=(i-(tm.length-1)/2)*90}
+  else{const i=Math.max(0,all.findIndex(p=>p.s==d.me));P.x=(i-(all.length-1)/2)*90;P.y=0}
+  MP.lk=kills;$('mpi').style.display='block';
+  WV.endless=MP.en;WV.on=vs?0:1;WV.N=10;WV.KILLS=Math.min(40,Math.round((crazy()?20:10)*wvScale()));WV.n=1;WV.cd=0;WV.im=0;WV.wd=0;WV.pwd=0;
   if(WV.on){WV.cd=5;P.inv.e+=50;P.inv.g+=50;P.inv.m+=50;spawnT=1e3;sfx(700,.3,'square',.6)}
-  ban(d.m=='vs'?'⚔️ ضد '+MP.op+' — أول من يصل للعلم 🚩 يفوز (فوق)':'🤝 مع '+MP.op+' · '+(d.side?'المضيف: '+MP.op:'أنت المضيف 👑')+' · الصعوبة: '+(DFN[CFG.diff]||''))}
+  const nms=MP.ps.map(p=>p.n).join('، ');
+  ban(vs?'⚔️ فريقك ضد الفريق الثاني — أول فريق يوصل للعلم 🚩 (فوق) أو يدمّر الخصوم يفوز':(MP.en?'♾️ Endless':'🤝')+(nms?' مع '+nms:' لحالك')+' · الصعوبة: '+(DFN[CFG.diff]||''))}
 const _sg=saveGame;saveGame=function(){if(!MP.lock)_sg()};
 const _wl=winLevel;winLevel=function(){if(!MP.on)return _wl();done=true;mode='mp';mpSend({t:'fin'});mpEnd('win')};
 const _bh=$('bh').onclick;$('bh').onclick=()=>{if(MP.lock)mpClose();else _bh()};
 function mpEnd(r){
-  if(MP.end)return;mpRd();WV.on=0;WV.cd=0;WV.im=0;NOE=0;$('dmo').classList.remove('on');MP.end=1;MP.on=0;mode='mp';mpDrop();$('mpi').style.display='none';
-  const vs=MP.m=='vs';
-  const T={win:vs?'🏆 فزت!':'🎉 فزتم كفريق!',lose:vs?'💥 خسرت':'💥 خسر الفريق',left:vs?'🏆 الخصم غادر — فزت!':'🚪 الشريك غادر'}[r];
-  const win=r=='win'||(r=='left'&&vs),rw=win?50:10;
+  if(MP.end)return;const wv=WV.n,en=MP.en;mpRd();WV.on=0;WV.cd=0;WV.im=0;NOE=0;$('dmo').classList.remove('on');MP.end=1;MP.on=0;mode='mp';mpDrop();$('mpi').style.display='none';
+  const vs=MP.m=='vs',tm=MP.ts>1;let T,rw;
+  if(vs){T={win:tm?'🏆 فاز فريقك!':'🏆 فزت!',lose:tm?'💥 خسر فريقك':'💥 خسرت',left:'🏆 الخصوم غادروا — فزتم!'}[r];rw=(r=='win'||r=='left')?50:10}
+  else if(en){T='♾️ وصلتم للموجة '+ar(wv)+(r=='left'?' (الكل غادر)':'');rw=Math.max(10,(wv-1)*8)}
+  else{T={win:'🎉 فزتم كفريق!',lose:'💥 خسر الفريق',left:'🚪 الشركاء غادروا'}[r];rw=r=='win'?50:10}
   meta.coins+=rw;try{localStorage.setItem(MK,JSON.stringify(meta))}catch(e){}
-  $('mpt').textContent=T;$('mpd').textContent='+ '+rw+' 🪙';
+  $('mpt').textContent=T;$('mpd').textContent='+ '+rw+' 🪙'+(en?' · أفضل موجة: '+ar(BESTW):'');
   setTimeout(()=>{if(mode=='mp')$('mpr').classList.add('on')},600)}
-function gHold(sh){let h=MP.gs[sh];if(!h){const cells=[];MAPS[sh].forEach((r,j)=>[...r].forEach((ch,i)=>{const t={H:'h',R:'r',E:'e',W:'w'}[ch];if(t)cells.push({x:i,y:j,t,c:0})}));h=MP.gs[sh]={cells,spr:null}}return h}
+function gHold(p){const sh=p.g.sh|0;let h=p.h;if(!h||h.sh!=sh){const cells=[];MAPS[sh].forEach((r,j)=>[...r].forEach((ch,i)=>{const t={H:'h',R:'r',E:'e',W:'w'}[ch];if(t)cells.push({x:i,y:j,t,c:0})}));h=p.h={sh,cells,spr:null}}return h}
+function mpSpec(){return MP.ps.find(p=>!p.dead&&!p.gone&&p.g&&(MP.m=='coop'||p.tm==MP.tm))||MP.ps.find(p=>!p.dead&&!p.gone&&p.g)||null}
+const mpOpN=()=>{const p=mpSpec();return p?p.n:'صاحبك'};
+function mpAllDone(){return !MP.on||MP.ps.every(p=>p.dead||p.gone||p.pwd>=WV.n)}
+const wvScale=()=>MP.on&&MP.m=='coop'?1+.5*Math.max(0,(MP.n0||1)-1):1;
+function mpGhostHit(b){for(const p of MP.ps)for(const k in p.gd){const e=p.gd[k];if(e.live&&Math.hypot(b.x-e.x,b.y-e.y)<(e.n*.6+1)*CFG.size*e.sc){b.life=0;e.fl=.08;boom(b.x,b.y,['#ffe08a'],3);return}}}
 function mpTick(dt){
   if(!MP.on)return;
   if(typeof paused!='undefined'&&paused)paused=false;
   wvTick(dt);
-  const g=MP.g;
-  if(g){const k=Math.min(1,dt*14);g.x+=(g.tx-g.x)*k;g.y+=(g.ty-g.y)*k;let a=g.tr-g.r;a=Math.atan2(Math.sin(a),Math.cos(a));g.r+=a*k}
+  const co=MP.m=='coop',k1=Math.min(1,dt*14),k2=Math.min(1,dt*12);
+  for(const p of MP.ps){const g=p.g;
+    if(g){g.x+=(g.tx-g.x)*k1;g.y+=(g.ty-g.y)*k1;let a=g.tr-g.r;a=Math.atan2(Math.sin(a),Math.cos(a));g.r+=a*k1}
+    for(const i in p.gd){const e=p.gd[i];if(e.live){e.x+=(e.tx-e.x)*k2;e.y+=(e.ty-e.y)*k2}e.fl-=dt}}
   if(!MP.dead){
     {const uk=P.cells.length+'|'+sgN()+'|'+(CFG.ship|0);if(uk!=MP.uk){MP.uk=uk;mpSend({t:'u',c:P.cells.map(c=>[c.x,c.y,c.t,c.sg?1:0])})}}
     MP.st-=dt;if(MP.st<=0){MP.st=.066;mpSend({t:'s',x:P.x|0,y:P.y|0,r:+P.rot.toFixed(2),a:+P.aim.toFixed(2),h:Math.max(0,P.hp|0),M:P.max|0,mv:P.mv?1:0,sh:CFG.ship|0,sg:pw.sh>0?1:0})}
     {const nb=[];for(const b of B)if(b.own&&!b.sent&&!b.r){b.sent=1;nb.push([b.x|0,b.y|0,b.vx|0,b.vy|0,b.dmg,+b.life.toFixed(2)])}
       if(nb.length)mpSend({t:'b',b:nb})}
-    if(MP.m=='coop'){
+    if(co){
       MP.et-=dt;
       if(MP.et<=0){MP.et=.1;const l=[];
         for(const e of E){if(l.length>=40)break;
@@ -769,39 +819,43 @@ function mpTick(dt){
         if(l.length||MP.el)mpSend({t:'e',l});MP.el=l.length}
       {const eb=[];for(const b of B)if(!b.own&&!b.vis&&!b.es){b.es=1;if(eb.length<40)eb.push([b.x|0,b.y|0,b.vx|0,b.vy|0,+b.life.toFixed(2)])}
         if(eb.length)mpSend({t:'eb',b:eb})}
-      for(const b of B)if(b.own&&!b.r&&b.life>0){for(const k in MP.gd){const e=MP.gd[k];if(e.live&&Math.hypot(b.x-e.x,b.y-e.y)<(e.n*.6+1)*CFG.size*e.sc){b.life=0;e.fl=.08;boom(b.x,b.y,['#ffe08a'],3);break}}}
-    }
-    if(MP.m=='vs'){
-      if(g)for(const b of B)if(b.own&&!b.r&&Math.hypot(b.x-g.x,b.y-g.y)<P.rad+4){b.life=0;boom(b.x,b.y,['#ffe08a'],3)}}
-    else{if(kills>MP.lk)mpSend({t:'k',n:kills-MP.lk});MP.lk=kills}
-    if(over){MP.dead=1;mode='mp';mpSend({t:'dead'});if(MP.m=='vs')mpEnd('lose');else if(MP.pd)mpEnd('lose');else $('dmo').classList.add('on')}}
-  else if(MP.m=='coop'){
-    if(g){P.x=g.x;P.y=g.y}
-    if(E.length)E=[];if(D.length)D=[];
-    for(const b of B){b.x+=b.vx*dt;b.y+=b.vy*dt;b.life-=dt;
-      if(b.vis&&!b.en&&b.life>0)for(const k in MP.gd){const e=MP.gd[k];if(e.live&&Math.hypot(b.x-e.x,b.y-e.y)<(e.n*.6+1)*CFG.size*e.sc){b.life=0;e.fl=.08;boom(b.x,b.y,['#ffe08a'],3);break}}}
+      for(const b of B)if(b.own&&!b.r&&b.life>0)mpGhostHit(b);
+      if(kills>MP.lk)mpSend({t:'k',n:kills-MP.lk});MP.lk=kills}
+    else{
+      for(const b of B)if(b.own&&!b.r&&b.life>0)for(const p of MP.ps){if(p.tm==MP.tm||p.dead||p.gone||!p.g)continue;if(Math.hypot(b.x-p.g.x,b.y-p.g.y)<P.rad+4){b.life=0;boom(b.x,b.y,['#ffe08a'],3);break}}}
+    if(over){MP.dead=1;mode='mp';mpSend({t:'dead'});
+      if(MP.m=='vs')mpVsCheck();else if(MP.ps.every(p=>p.dead||p.gone))mpEnd('lose');
+      if(!MP.end)$('dmo').classList.add('on')}}
+  else{
+    const sp=mpSpec();if(sp&&sp.g){P.x=sp.g.x;P.y=sp.g.y}
+    if(co){if(E.length)E=[];if(D.length)D=[]}
+    for(const b of B){b.x+=b.vx*dt;b.y+=b.vy*dt;b.life-=dt;if(co&&b.vis&&!b.en&&b.life>0)mpGhostHit(b)}
     B=B.filter(b=>b.life>0);
     for(const p of PT){p.x+=p.vx*dt;p.y+=p.vy*dt;p.l-=dt}PT=PT.filter(p=>p.l>0);shake=0}
-  {const k=Math.min(1,dt*12);for(const i in MP.gd){const e=MP.gd[i];if(e.live){e.x+=(e.tx-e.x)*k;e.y+=(e.ty-e.y)*k}e.fl-=dt}}
-  MP.ht-=dt;if(MP.ht<=0){MP.ht=.4;$('mpi').textContent='🌐 '+(MP.op||'')+' · '+(g?'❤️ '+g.h+'/'+g.M:'⏳ بانتظار اللاعب')+(MP.m=='coop'?' · 🎯 '+Math.min(kills|0,goal)+'/'+goal:'')}}
+  MP.ht-=dt;if(MP.ht<=0){MP.ht=.4;let s;
+    if(co)s='🌐 '+(MP.ps.map(p=>p.n+(p.dead?' 💀':p.gone?' 🚪':p.g?' ❤️'+p.g.h:' ⏳')).join(' · ')||'لحالك')+(MP.en?'':' · 🎯 '+Math.min(kills|0,goal)+'/'+goal);
+    else{let a=MP.dead?0:1,o=0;for(const p of MP.ps){if(p.dead||p.gone)continue;if(p.tm==MP.tm)a++;else o++}s='⚔️ فريقك '+a+' حي · الخصوم '+o+' حي'}
+    $('mpi').textContent=s}}
 function mpDraw(){
-  if(MP.on&&MP.m=='coop'){const tg=MP.g||P;ctx.imageSmoothingEnabled=true;
-    for(const k in MP.gd){const e=MP.gd[k];if(!e.live)continue;const S=CFG.size*e.sc,sp=enemySpr(e,e.fl>0);
-      ctx.save();ctx.translate(e.x|0,e.y|0);ctx.rotate(Math.atan2(tg.y-e.y,tg.x-e.x));ctx.drawImage(sp.m,sp.x0,sp.y0);ctx.restore();
-      R('#222',e.x-14*e.sc,e.y-e.n*S*.6-10,28*e.sc,4);R('#ff5a6e',e.x-14*e.sc,e.y-e.n*S*.6-10,28*e.sc*Math.max(0,Math.min(1,e.hp/e.mx)),4);if(e.ic)dtxt(e.ic,'14px sans-serif','#fff',e.x,e.y-e.n*S*.6-14)}
+  if(!MP.on)return;
+  const co=MP.m=='coop',S=CFG.size;
+  if(co){ctx.imageSmoothingEnabled=true;
+    for(const p of MP.ps){const tg=p.g||P;
+      for(const k in p.gd){const e=p.gd[k];if(!e.live)continue;const SS=S*e.sc,sp=enemySpr(e,e.fl>0);
+        ctx.save();ctx.translate(e.x|0,e.y|0);ctx.rotate(Math.atan2(tg.y-e.y,tg.x-e.x));ctx.drawImage(sp.m,sp.x0,sp.y0);ctx.restore();
+        R('#222',e.x-14*e.sc,e.y-e.n*SS*.6-10,28*e.sc,4);R('#ff5a6e',e.x-14*e.sc,e.y-e.n*SS*.6-10,28*e.sc*Math.max(0,Math.min(1,e.hp/e.mx)),4);if(e.ic)dtxt(e.ic,'14px sans-serif','#fff',e.x,e.y-e.n*SS*.6-14)}}
     ctx.imageSmoothingEnabled=false}
-  const g=MP.g;if(!MP.on||!g||g.dead)return;
-  const S=CFG.size,o=P,h=gHold(g.sh);if(MP.uc){h.cells=MP.uc;h.spr=null;MP.uc=null}P=h;const ss=shipSpr();P=o;
-  ctx.save();ctx.translate(Math.round(g.x),Math.round(g.y));ctx.rotate(g.r);
-  if(g.mv)for(const c of ss.fc){R('#ffb347',(c.x-5)*S-S/2-3-Math.random()*7,(c.y-3)*S-S/2+2,5+Math.random()*3,S-4)}
-  ctx.drawImage(ss.m,ss.x0,ss.y0);ctx.restore();
-  const col=MP.m=='vs'?'#ff5a6e':'#5cf0ff';
-  ctx.strokeStyle=col;ctx.globalAlpha=.7;ctx.lineWidth=2;ctx.beginPath();ctx.arc(g.x,g.y,S*3.2,0,7);ctx.stroke();
-  if(g.sg){ctx.strokeStyle='#7dff9acc';ctx.beginPath();ctx.arc(g.x,g.y,S*5.5,0,7);ctx.stroke()}
-  ctx.globalAlpha=1;ctx.lineWidth=1;
-  const by=g.y-S*5;R('#222',g.x-18,by,36,4);R(col,g.x-18,by,36*Math.max(0,Math.min(1,g.h/(g.M||1))),4);
-  dtxt((MP.m=='vs'?'⚔️ ':'🤝 ')+(MP.op||'لاعب'),'bold 14px sans-serif',col,g.x,by-6)}
-
+  for(const p of MP.ps){const g=p.g;if(!g||g.dead||p.dead||p.gone)continue;
+    const o=P,h=gHold(p);if(p.uc){h.cells=p.uc;h.spr=null;p.uc=null}P=h;const ss=shipSpr();P=o;
+    ctx.save();ctx.translate(Math.round(g.x),Math.round(g.y));ctx.rotate(g.r);
+    if(g.mv)for(const c of ss.fc){R('#ffb347',(c.x-5)*S-S/2-3-Math.random()*7,(c.y-3)*S-S/2+2,5+Math.random()*3,S-4)}
+    ctx.drawImage(ss.m,ss.x0,ss.y0);ctx.restore();
+    const col=p.col;
+    ctx.strokeStyle=col;ctx.globalAlpha=.7;ctx.lineWidth=2;ctx.beginPath();ctx.arc(g.x,g.y,S*3.2,0,7);ctx.stroke();
+    if(g.sg){ctx.strokeStyle='#7dff9acc';ctx.beginPath();ctx.arc(g.x,g.y,S*5.5,0,7);ctx.stroke()}
+    ctx.globalAlpha=1;ctx.lineWidth=1;
+    const by=g.y-S*5;R('#222',g.x-18,by,36,4);R(col,g.x-18,by,36*Math.max(0,Math.min(1,g.h/(g.M||1))),4);
+    dtxt((MP.m=='vs'?(p.tm==MP.tm?'🤝 ':'⚔️ '):'🤝 ')+p.n,'bold 14px sans-serif',col,g.x,by-6)}}
 if(!MP.name)nameOpen();else mpBoot();
 </script>
 <script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>

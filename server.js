@@ -19,12 +19,13 @@ const srv=http.createServer((req,res)=>{
 
 /* ---------- WebSocket (يدوي، نصوص فقط) ---------- */
 const GUID='258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
-const clients=new Set(),queue={coop:null,vs:null},rooms=new Map();
-const RT=new Set(['s','b','k','fin','dead','u','e','en','eb','wd','wn']); // رسائل تُمرَّر للاعب الآخر فقط
+const clients=new Set(),rooms=new Map();
+const RT=new Set(['s','b','k','fin','dead','u','e','en','eb','wd','wn']); // رسائل تُمرَّر لباقي اللاعبين في الغرفة
 const CH='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const names=new Map();
 const nm=v=>String(v||'').replace(/[\u0000-\u001f<>]/g,'').trim().slice(0,14);
 let nid=1;
+const COOP_MAX=4; // أقصى عدد لاعبين في التعاوني
 
 function frame(op,d){
   let h;
@@ -36,73 +37,97 @@ function send(c,o){if(!c.alive)return;try{c.s.write(frame(1,Buffer.from(JSON.str
 function kill(c){
   if(!c.alive)return;c.alive=false;clients.delete(c);leave(c);
   if(c.name&&names.get(c.name.toLowerCase())===c)names.delete(c.name.toLowerCase());
-  for(const o of clients)if(o.inv&&o.inv.to===c){o.inv=null;send(o,{t:'err',e:'اللاعب غادر'})}
   try{c.s.end()}catch(e){}try{c.s.destroy()}catch(e){}
 }
 function leave(c){
-  if(c.inv){send(c.inv.to,{t:'invx',from:c.name});c.inv=null}
-  for(const m in queue)if(queue[m]===c)queue[m]=null;
   const r=c.room;if(!r)return;
-  c.room=null;if(r.code)rooms.delete(r.code);
-  const o=r.a===c?r.b:r.a;
-  if(o&&o.room===r){o.room=null;send(o,{t:'left'})}
+  c.room=null;c.rd=0;
+  const i=r.players.indexOf(c);if(i>=0)r.players.splice(i,1);
+  if(!r.players.length){closeRoom(r);return}
+  if(r.lobby){r.players.forEach(o=>o.rd=o===r.players[0]?0:o.rd);lobbyMsg(r)}
+  else for(const o of r.players)send(o,{t:'pl',f:c.sl});
 }
+function closeRoom(r){if(r.code&&rooms.get(r.code)===r)rooms.delete(r.code);if(r.at){clearTimeout(r.at);r.at=0}}
 const dfOf=v=>{v=+v;return [.7,1,1.4,2].includes(v)?v:1};
 const lvOf=v=>[Math.max(0,Math.min(49,(v&&v[0])|0)),Math.max(1,Math.min(10,((v&&v[1])|0)||1))];
 function mkCode(){let c;do{c='';for(let i=0;i<4;i++)c+=CH[crypto.randomInt(CH.length)]}while(rooms.has(c));return c}
-function begin(r){ // غرفة انتظار: المضيف (a) يختار الصعوبة والضيف (b) يضغط جاهز
-  if(r.code){rooms.delete(r.code)}
-  r.a.inv=null;r.lobby=1;r.rb=0;
-  send(r.a,{t:'lobby',m:r.m,lv:r.lv,df:r.df,side:0,op:r.b.name||'لاعب'});
-  send(r.b,{t:'lobby',m:r.m,lv:r.lv,df:r.df,side:1,op:r.a.name||'لاعب'});
+function mkRoom(c,d,pub){
+  const m=d.m==='vs'?'vs':'coop',ts=m==='vs'?Math.max(1,Math.min(4,d.ts|0||1)):0,en=m==='coop'&&d.en?1:0;
+  const r={code:mkCode(),m,en,ts,max:m==='vs'?ts*2:COOP_MAX,lv:lvOf(d.lv),df:dfOf(d.df),pub:pub?1:0,key:m+(en?'E':'')+ts,players:[],lobby:1,ns:0,inv:new Set(),at:0};
+  rooms.set(r.code,r);join(r,c);return r;
+}
+function cnt(r,t){return r.players.filter(p=>p.tm===t).length}
+function join(r,c){
+  leave(c);r.players.push(c);c.room=r;c.sl=r.ns++;c.rd=0;
+  c.tm=r.m==='vs'?(cnt(r,0)<=cnt(r,1)?0:1):0;
+  if(r.m==='vs'&&cnt(r,c.tm)>r.ts)c.tm=1-c.tm;
+  lobbyMsg(r);
+  if(r.at){clearTimeout(r.at);r.at=0}
+  if(r.pub&&r.players.length>=r.max&&r.max>1)r.at=setTimeout(()=>{r.at=0;if(r.lobby&&r.players.length>=r.max)launch(r)},4000);
+}
+function lobbyMsg(r){
+  const ps=r.players.map(c=>({s:c.sl,n:c.name||'لاعب',t:c.tm|0,r:c.rd?1:0}));
+  r.players.forEach((c,i)=>send(c,{t:'lobby',m:r.m,en:r.en,ts:r.ts,lv:r.lv,df:r.df,code:r.code,pub:r.pub,host:i===0?1:0,me:c.sl,p:ps,max:r.max}));
 }
 function launch(r){
-  r.lobby=0;
-  send(r.a,{t:'start',m:r.m,lv:r.lv,df:r.df,side:0,op:r.b.name||'لاعب'});
-  send(r.b,{t:'start',m:r.m,lv:r.lv,df:r.df,side:1,op:r.a.name||'لاعب'});
+  r.lobby=0;if(r.at){clearTimeout(r.at);r.at=0}
+  closeRoom(r);
+  const ps=r.players.map(c=>({s:c.sl,n:c.name||'لاعب',t:c.tm|0}));
+  for(const c of r.players)send(c,{t:'start',m:r.m,en:r.en,ts:r.ts,lv:r.lv,df:r.df,me:c.sl,p:ps});
+}
+function canStart(r){
+  if(!r.lobby||!r.players.length)return false;
+  for(let i=1;i<r.players.length;i++)if(!r.players[i].rd)return false;
+  if(r.m==='vs'&&(cnt(r,0)<1||cnt(r,1)<1))return false;
+  return true;
 }
 function onMsg(c,d){
-  const now=Date.now();if(now-c.t>1000){c.t=now;c.n=0}if(++c.n>150)return;
+  const now=Date.now();if(now-c.t>1000){c.t=now;c.n=0}if(++c.n>200)return;
   switch(d.t){
     case 'pub':{
-      leave(c);const m=d.m==='vs'?'vs':'coop',q=queue[m];
-      if(q&&q.alive&&q!==c&&!q.room){queue[m]=null;const r={code:'',m,lv:q.lv,df:q.df,a:q,b:c};q.room=c.room=r;begin(r)}
-      else{c.lv=lvOf(d.lv);c.df=dfOf(d.df);queue[m]=c;send(c,{t:'wait'})}
+      leave(c);const m=d.m==='vs'?'vs':'coop',ts=m==='vs'?Math.max(1,Math.min(4,d.ts|0||1)):0,en=m==='coop'&&d.en?1:0,key=m+(en?'E':'')+ts;
+      let r=null;for(const x of rooms.values())if(x.pub&&x.lobby&&x.key===key&&x.players.length<x.max&&x.players[0].alive){r=x;break}
+      if(r){c.lv=lvOf(d.lv);join(r,c)}else mkRoom(c,d,1);
       break}
-    case 'new':{
-      leave(c);const code=mkCode(),r={code,m:d.m==='vs'?'vs':'coop',lv:lvOf(d.lv),df:dfOf(d.df),a:c,b:null};
-      rooms.set(code,r);c.room=r;send(c,{t:'wait',c:code});break}
+    case 'new':{leave(c);mkRoom(c,d,0);break}
     case 'join':{
       leave(c);const r=rooms.get(String(d.c||'').toUpperCase());
-      if(!r||r.b||!r.a.alive){send(c,{t:'err',e:'الغرفة غير موجودة أو ممتلئة'});break}
-      r.b=c;c.room=r;begin(r);break}
+      if(!r||!r.lobby||r.players.length>=r.max){send(c,{t:'err',e:'الغرفة غير موجودة أو ممتلئة'});break}
+      join(r,c);break}
     case 'name':{
       const n=nm(d.n);if(n.length<2){send(c,{t:'err',e:'الاسم قصير',c:'name'});break}
       const k=n.toLowerCase(),o=names.get(k);
       if(o&&o!==c){if(o.room){send(c,{t:'err',e:'الاسم مستخدم الآن',c:'name'});break}kill(o)}
       if(c.name&&c.name.toLowerCase()!==k)names.delete(c.name.toLowerCase());
-      c.name=n;names.set(k,c);send(c,{t:'named',n});break}
-    case 'inv':{
-      leave(c);const o=names.get(nm(d.to).toLowerCase());
+      c.name=n;names.set(k,c);send(c,{t:'named',n});
+      if(c.room&&c.room.lobby)lobbyMsg(c.room);break}
+    case 'inv':{ // دعوة صديق: إذا ما عندك غرفة ننشئ لك غرفة خاصة
+      const o=names.get(nm(d.to).toLowerCase());
       if(!o||!o.alive||o===c){send(c,{t:'err',e:'ما لقيت لاعب بهذا الاسم متصل'});break}
-      if(o.room){send(c,{t:'err',e:o.name+' داخل مباراة الحين'});break}
-      c.inv={to:o,m:d.m==='vs'?'vs':'coop',lv:lvOf(d.lv),df:dfOf(d.df)};
-      send(o,{t:'inv',from:c.name,m:c.inv.m});send(c,{t:'wait',w:o.name});break}
+      if(o.room){send(c,{t:'err',e:o.name+' داخل غرفة الحين'});break}
+      let r=c.room;
+      if(r&&!r.lobby){send(c,{t:'err',e:'المباراة بدأت'});break}
+      if(!r)r=mkRoom(c,d,0);
+      if(r.players.length>=r.max){send(c,{t:'err',e:'الغرفة ممتلئة'});break}
+      r.inv.add(o);
+      send(o,{t:'inv',from:c.name,m:r.m,en:r.en,ts:r.ts});send(c,{t:'invok',w:o.name});break}
     case 'acc':{
-      const s=names.get(nm(d.from).toLowerCase());
-      if(!s||!s.alive||!s.inv||s.inv.to!==c||c.room||s.room){send(c,{t:'err',e:'الدعوة انتهت'});break}
-      leave(c);const iv=s.inv;s.inv=null;
-      const r={code:'',m:iv.m,lv:iv.lv,df:iv.df,a:s,b:c};s.room=c.room=r;begin(r);break}
+      const s=names.get(nm(d.from).toLowerCase()),r=s&&s.room;
+      if(!s||!s.alive||!r||!r.lobby||!r.inv.has(c)||c.room){send(c,{t:'err',e:'الدعوة انتهت'});break}
+      if(r.players.length>=r.max){send(c,{t:'err',e:'الغرفة ممتلئة'});break}
+      r.inv.delete(c);join(r,c);break}
     case 'dec':{
       const s=names.get(nm(d.from).toLowerCase());
-      if(s&&s.inv&&s.inv.to===c){s.inv=null;send(s,{t:'err',e:(c.name||'اللاعب')+' رفض الدعوة'})}break}
-    case 'df':{const r=c.room;if(!r||!r.lobby||r.a!==c||!r.b)break;r.df=dfOf(d.v);r.rb=0;send(r.b,{t:'df',v:r.df});send(r.a,{t:'rdy',v:0});break}
-    case 'rdy':{const r=c.room;if(!r||!r.lobby||r.b!==c)break;r.rb=d.v?1:0;send(r.a,{t:'rdy',v:r.rb});break}
-    case 'go':{const r=c.room;if(!r||!r.lobby||r.a!==c||!r.b||!r.rb)break;launch(r);break}
+      if(s&&s.room)s.room.inv.delete(c);
+      if(s)send(s,{t:'err',e:(c.name||'اللاعب')+' رفض الدعوة'});break}
+    case 'df':{const r=c.room;if(!r||!r.lobby||r.players[0]!==c)break;r.df=dfOf(d.v);for(const o of r.players)o.rd=0;lobbyMsg(r);break}
+    case 'tm':{const r=c.room;if(!r||!r.lobby||r.m!=='vs')break;const t=1-c.tm;if(cnt(r,t)>=r.ts)break;c.tm=t;c.rd=0;lobbyMsg(r);break}
+    case 'rdy':{const r=c.room;if(!r||!r.lobby||r.players[0]===c)break;c.rd=d.v?1:0;lobbyMsg(r);break}
+    case 'go':{const r=c.room;if(!r||r.players[0]!==c||!canStart(r))break;launch(r);break}
     case 'leave':leave(c);break;
     default:{
-      const r=c.room;if(!r||!r.b||r.lobby||!RT.has(d.t))return;
-      const o=r.a===c?r.b:r.a;if(o.alive)send(o,d)}
+      const r=c.room;if(!r||r.lobby||!RT.has(d.t))return;
+      d.f=c.sl;for(const o of r.players)if(o!==c&&o.alive)send(o,d)}
   }
 }
 function parse(c){
